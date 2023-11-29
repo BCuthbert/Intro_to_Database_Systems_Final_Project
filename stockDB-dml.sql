@@ -7,6 +7,7 @@ insert into account values ('00001','jbonham','password111','2023-11-09',10000);
 insert into account values ('00002','rplant','password222', '2023-11-09',10000);
 insert into account values ('00003','jpage','password333','2023-11-09',10000);
 insert into account values ('00004','jpjones','password444', '2023-11-09',10000);
+insert into account values ('99999','test1','password000', '2023-11-09',100000);
 
 insert into stocks values ('AAPL','Apple');
 insert into stocks values ('AMZN','Amazon');
@@ -41,14 +42,11 @@ insert into price_history values ('2023-11-15','AMD', 118.00);
 insert into price_history values ('2023-11-16','AMD', 119.83);
 insert into price_history values ('2023-11-17','AMD', 120.62);
 
---jbohnam
-insert into lots values ();
+--test user
+insert into lots values ('99999','001','AAPL',100,184.80,'2023-11-13')
+insert into lots values ('99999','002','AAPL',100,187.44,'2023-11-14')
 
---rplant
-insert into lots values ();
+insert into lots values ('99999','003','AMZN',100,142.59,'2023-11-13')
 
---jpage
-insert into lots values ();
+insert into lots values ('99999','004','NVDA',100,486.20,'2023-11-13')
 
---jpjones
-insert into lots values ();
