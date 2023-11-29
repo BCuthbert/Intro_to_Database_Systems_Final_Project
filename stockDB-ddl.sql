@@ -1,10 +1,10 @@
 
 create table account
-	(id			    varchar(5),
-     user           varchar(20),
-     password       varchar(20),
-     creation_date  date
-     cash           numeric(10,2)
+	(id AUTO_INCREMENT varchar(5),
+     user           	   varchar(20),
+     password       	   varchar(20),
+     creation_date  	   date
+     cash           	   numeric(10,2)
      accnt_value as (SELECT sum(lot_value) FROM lots WHERE id = lots.id)
      primary key (id)
 	);
