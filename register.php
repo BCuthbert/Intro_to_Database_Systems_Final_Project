@@ -16,7 +16,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $username_err = "Username can only contain letters, numbers, and underscores.";
     } else{
         // Prepare a select statement
-        $sql = "SELECT id FROM account WHERE user = ".$username;
+        $username = trim($_POST["username"]);
+        $sql = "SELECT id FROM account WHERE user = '" . $username . "';";
         
         if($stmt = $mysqli->prepare($sql)){
             // Bind variables to the prepared statement as parameters
@@ -29,7 +30,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             if($stmt->execute()){
                 // store result
                 $stmt->store_result();
-                
                 if($stmt->num_rows == 1){
                     $username_err = "This username is already taken.";
                 } else{
@@ -51,6 +51,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $password_err = "Password must have at least 6 characters.";
     } else{
         $password = trim($_POST["password"]);
+        if (!preg_match("/\W/", $password)){
+            $password_err = "Password must contain a special character.";
+        }
     }
     
     // Validate confirm password
@@ -67,7 +70,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO account (username, password) VALUES (".$username.",".$password.");";
+        $sql = "INSERT INTO account (user, password) VALUES ('" . $username . "','" . password_hash($password, PASSWORD_DEFAULT) . "');";
+        
          
         if($stmt = $mysqli->prepare($sql)){
             // Bind variables to the prepared statement as parameters
@@ -75,11 +79,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             
             // Set parameters
             $param_username = $username;
-            $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
-            
             // Attempt to execute the prepared statement
             if($stmt->execute()){
-                // Redirect to login page
+                // redirect to login page
                 header("location: login.php");
             } else{
                 echo "Oops! Something went wrong. Please try again later.";

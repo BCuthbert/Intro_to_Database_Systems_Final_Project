@@ -10,7 +10,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
  
 // Include config file
 require_once "config.php";
- 
+
 // Define variables and initialize with empty values
 $username = $password = "";
 $username_err = $password_err = $login_err = "";
@@ -35,8 +35,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     // Validate credentials
     if(empty($username_err) && empty($password_err)){
         // Prepare a select statement
-        $sql = "SELECT id, username, password FROM users WHERE username = ?";
-        
+        $sql = "SELECT id, user, password FROM account WHERE user = '" . $username . "'";
         if($stmt = $mysqli->prepare($sql)){
             // Bind variables to the prepared statement as parameters
             $stmt->bind_param("s", $param_username);
@@ -62,7 +61,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                             $_SESSION["loggedin"] = true;
                             $_SESSION["id"] = $id;
                             $_SESSION["username"] = $username;                            
-                            
+                            echo "<script>console.log('logged in ');</script>";
                             // Redirect user to welcome page
                             header("location: home.php");
                         } else{
@@ -72,7 +71,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                     }
                 } else{
                     // Username doesn't exist, display a generic error message
-                    $login_err = "Invalid username or password.";
+                    $login_err = "Invalid username or password.3";
                 }
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
