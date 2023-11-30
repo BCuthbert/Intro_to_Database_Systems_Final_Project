@@ -1,6 +1,6 @@
 <?php
 /* Database credentials. */
-define('DB_SERVER', 'dbdev.cs.kent.edu');
+define('DB_SERVER', 'localhost');
 define('DB_USERNAME', 'bcuthbe1');
 define('DB_PASSWORD', '#');
 define('DB_NAME', 'bcuthbe1');
