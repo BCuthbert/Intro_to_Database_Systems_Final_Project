@@ -14,7 +14,6 @@ create table stocks(
      primary key (ticker)
     );
 
-
 create table lots(
      lot_num            int AUTO_INCREMENT,
      id                 int,
