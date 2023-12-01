@@ -36,3 +36,7 @@ insert into price_history values ('2023-11-15','AMD', 118.00);
 insert into price_history values ('2023-11-16','AMD', 119.83);
 insert into price_history values ('2023-11-17','AMD', 120.62);
 
+insert into account values ('00001','jbonham','password111','2023-11-09',10000);
+insert into account values ('00002','rplant','password222', '2023-11-09',10000);
+insert into account values ('00003','jpage','password333','2023-11-09',10000);
+insert into account values ('00004','jpjones','password444', '2023-11-09',10000);
