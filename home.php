@@ -21,7 +21,7 @@ $deposit_err = "";
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-    // Check if username is empty
+    // Check if deposit amount is empty
     if(empty(trim($_POST["deposit"]))){
         $deposit_err = "Please enter the amount of money to deposit.";
     } else{

@@ -13,7 +13,7 @@ create table stocks(
      company_name       varchar(30),
      primary key (ticker)
     );
-    
+
 create table lots(
      id                 int,
      lot_num            varchar(5),
