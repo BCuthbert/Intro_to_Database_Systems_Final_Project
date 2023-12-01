@@ -19,37 +19,37 @@ $deposit = "";
 $deposit_err = "";
  
 // Processing form data when form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-    // Check if deposit amount is empty
-    if(empty(trim($_POST["deposit"]))){
-        $deposit_err = "Please enter the amount of money to deposit.";
-    } else{
-        $deposit = trim($_POST["deposit"]);
-    }
-    // Validate credentials
-    if(empty($deposit_err)){
-        // Prepare a select statement
-        $sql = "UPDATE account SET cash = cash + (?) WHERE id = (?);";
-        if($stmt = $mysqli->prepare($sql)){
-
-            $stmt->bind_param("di", $param_deposit, $_SESSION['id']);
-
-            $param_id = $_SESSION["id"];
-            $param_deposit = floatval($deposit);
-
-            if(!$stmt->execute()){
-            
-                $deposit_err = "Deposit error.";
-                
-            } 
-
-
-            $stmt->close();
-        }else{
-            echo "<script>console.log('Something went wrong (line 34)');</script>";
+        // Check if deposit amount is empty
+        if(empty(trim($_POST["deposit"]))){
+            $deposit_err = "Please enter the amount of money to deposit.";
+        } else{
+            $deposit = trim($_POST["deposit"]);
         }
-    }
+        // Validate credentials
+        if(empty($deposit_err)){
+            // Prepare a select statement
+            $sql = "UPDATE account SET cash = cash + (?) WHERE id = (?);";
+            if($stmt = $mysqli->prepare($sql)){
+
+                $stmt->bind_param("di", $param_deposit, $_SESSION['id']);
+
+                $param_id = $_SESSION["id"];
+                $param_deposit = floatval($deposit);
+
+                if(!$stmt->execute()){
+                
+                    $deposit_err = "Deposit error.";
+                    
+                } 
+
+
+                $stmt->close();
+            }else{
+                echo "<script>console.log('Something went wrong (line 34)');</script>";
+            }
+        }
 
     }
 
@@ -71,8 +71,29 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
     
 
-    $mysqli->close();
-}
+        $stmt->close();
+    }
+
+    $sql = "SELECT accVal FROM account_value WHERE id = (?);";
+
+    if($stmt = $mysqli->prepare($sql)){
+        $stmt->bind_param('i', $_SESSION["id"]);
+
+        if($stmt->execute()){
+            // Store result
+
+            $stmt->store_result();
+                                        
+            // Bind result variables
+            $stmt->bind_result($accoutValue);
+            $stmt->fetch();
+        } else {
+            echo "<script>console.log('Something went wrong.(Line 79)');</script>";
+        }
+
+
+        $stmt->close();
+    }
 ?>
 
 
@@ -93,6 +114,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body{ font: 14px sans-serif; text-align: center; }
+        table, th, td { border: 1px solid black; padding: 15px }
     </style>
 </head>
 <div class="w3-top">
@@ -131,8 +153,39 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </form>
         
     </div>
+
+    <p><h3>Your Total Account Value: $ <?php echo $accoutValue; ?></h3></p>
+<?php
+    $query = "SELECT ticker,Price,sum(Shares) as shares,sum(TotalValue) as total FROM lot_value where LotOwner = ? GROUP BY ticker";
+    if($stmt = $mysqli->prepare($query)){
+        $stmt->bind_param('i', $_SESSION["id"]);
+        $stmt->execute(); 
+        if($result= $stmt->get_result()){
+            // Store result
+            if ($result->num_rows > 0) {
+                // Setup the table and headers
+                echo "<Center><table><tr><th> STOCK </th><th> CURRENT PRICE </th><th> SHARES </th><th> Current Value </th></tr>";
+                // output data of each row into a table row
+                while($row = $result->fetch_assoc()) {
+                    echo "<tr><td>".$row["ticker"]."</td><td>".$row["Price"]."</td><td> ".$row["shares"]."</td><td> ".$row["total"]."</td></tr>";
+                }
+                echo "</table></center>"; // close the table
+                echo "There are ". $result->num_rows . " results.";
+                // Don't render the table if no results found
+            } else {
+                echo "0 results";
+            }
+
+        } else {
+            echo "<script>console.log('Something went wrong.(Line 158 )');</script>";
+        }
+    }
+    $result->close();
+?>
+
 </body>
 
+<?php $mysqli->close(); ?>
 
 
 <script>
