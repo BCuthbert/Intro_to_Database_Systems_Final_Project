@@ -15,19 +15,16 @@ create table stocks(
     );
 
 create table lots(
+     lot_num            int AUTO_INCREMENT,
      id                 int,
-     lot_num            varchar(5),
      ticker             varchar(4),
      num_shares         numeric(6,0),
      purchase_price     numeric(6,2),
      purchase_date      date,
-     primary key (id,lot_num),
+     primary key (lot_num,id),
      foreign key (id) references account (id),
      foreign key (ticker) references stocks (ticker)
     );
-
-
-
 
 create table price_history(
      price_date     date,
