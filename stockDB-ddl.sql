@@ -33,4 +33,18 @@ create table price_history(
      price          numeric(6,2),
      primary key (price_date,ticker),
      foreign key (ticker) references stocks (ticker)
-    );   
+    ); 
+
+create view   stock_prices(ticker, CurrentPrice) as 
+     SELECT ticker, price 
+     from price_history 
+     where price_date = '2023-11-17';
+
+create view  lot_value(TotalValue,ticker,Price,Shares,Lot,LotOwner) as 
+     SELECT (num_shares*CurrentPrice),ticker,CurrentPrice,num_shares,lot_num,id 
+     from lots NATURAL JOIN stock_prices;
+
+create view account_value(accVal,id) as
+     SELECT sum(TotalValue) + cash, id 
+     from lot_value join account on lot_value.LotOwner=account.id;
+ 
