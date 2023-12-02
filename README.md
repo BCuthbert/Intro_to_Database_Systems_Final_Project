@@ -2,24 +2,24 @@
 
 ## Pages
 ### Login
-- [ ] user field
-- [ ] password field
-- [ ] login button - checks credentials against users in the database and redirects to home or incorrect password/user message
-- [ ] register button/link - redirects to registration page
+- [X] user field
+- [X] password field
+- [X] login button - checks credentials against users in the database and redirects to home or incorrect password/user message
+- [X] register button/link - redirects to registration page
 
 ### Register
-- [ ] user field - check against exsisting users in db
-- [ ] password field
-- [ ] cash to transfer (cheesy but that should be fine)
-- [ ] submit button - automatically assign new id and creation date, adds new entry to 'accounts' in the db
+- [X] user field - check against exsisting users in db
+- [X] password field
+- [X] submit button - automatically assign new id and creation date, adds new entry to 'accounts' in the db
 
 ### Home - Account
 - [ ] Brows stocks link - redirects to stock list page
-- [ ] displays cash amount
-- [ ] table showing stocks and values
+- [X] cash to transfer (cheesy but that should be fine)
+- [X] displays cash amount
+- [X] table showing stocks and values
 - [ ] \(Optional) expand to show each lot of this stock owned by user
 - [ ] sell buttons for each stock - redirects to sell page or opens a sell form
-- [ ] display total account value
+- [X] display total account value
 
 ### Stock List
 - [ ] display list of all stocks (lol all 4 of them)

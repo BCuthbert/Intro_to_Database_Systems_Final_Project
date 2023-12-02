@@ -44,15 +44,15 @@ create view  lot_value(TotalValue,ticker,Price,Shares,Lot,LotOwner) as
      from lots NATURAL JOIN stock_prices;
 
 create view account_value(accVal,id) as
-     SELECT sum(TotalValue) + cash, id 
-     from lot_value join account on lot_value.LotOwner=account.id;
-
+     SELECT IF(TotalValue IS NOT NULL,sum(TotalValue)+cash,cash), id 
+     from lot_value right outer join account on lot_value.LotOwner=account.id
+     GROUP BY id;
 
 create view  historic_lot_value(date,TotalValue,ticker,Price,Shares,Lot,LotOwner) as 
      SELECT price_date,(num_shares*price),ticker,price,num_shares,lot_num,id 
      from lots NATURAL JOIN price_history;
 
 create view historic_account_value(date,accVal,id) as
-     SELECT date, sum(TotalValue) + cash, id
-     from historic_lot_value join account on historic_lot_value.LotOwner=account.id
+     SELECT date, IF(TotalValue IS NOT NULL,sum(TotalValue)+cash,cash), id
+     from historic_lot_value right outer join account on historic_lot_value.LotOwner=account.id
      GROUP BY date;
