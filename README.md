@@ -3,7 +3,7 @@
 ## Pages
 ### Login
 - [X] user field
-- [X]password field
+- [X] password field
 - [X] login button - checks credentials against users in the database and redirects to home or incorrect password/user message
 - [X] register button/link - redirects to registration page
 
