@@ -10,10 +10,6 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 require_once "config.php";
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-    
-}
-
 
 $deposit = "";
 $deposit_err = "";
@@ -98,7 +94,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <div class="w3-top">
   <div class="w3-bar w3-white w3-card w3-large">
     <a class="w3-bar-item w3-left-align w3-button w3-padding-large w3-hover-gray" style="font-size:23px;" onclick="window.location.reload();">Home</a>
-    <a href="#" class="w3-bar-item w3-left-align w3-button w3-hide-small w3-padding-large w3-hover-gray" style="font-size:23px;">Stocks</a>
+    <a href="./stocks.php" class="w3-bar-item w3-left-align w3-button w3-hide-small w3-padding-large w3-hover-gray" style="font-size:23px;">Stocks</a>
     <a href="#" class="w3-bar-item w3-left-align w3-button w3-hide-small w3-padding-large w3-hover-gray" style="font-size:23px;">Buy</a>
     <a href="#" class="w3-bar-item w3-left-align w3-button w3-hide-small w3-padding-large w3-hover-gray" style="font-size:23px;">Sell</a>
     <a onclick="show_hide();" class="w3-bar-item w3-right w3-button w3-hide-small w3-padding-large w3-hover-red"><i class="fa fa-user" style="font-size:32px;padding:medium;"><br><?php echo htmlspecialchars($_SESSION["username"]); ?></i></a>
