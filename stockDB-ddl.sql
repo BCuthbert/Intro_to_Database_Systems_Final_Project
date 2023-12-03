@@ -39,8 +39,8 @@ create view   stock_prices(ticker, CurrentPrice) as
      from price_history 
      where price_date = '2023-11-17';
 
-create view  lot_value(TotalValue,ticker,Price,Shares,Lot,LotOwner) as 
-     SELECT (num_shares*CurrentPrice),ticker,CurrentPrice,num_shares,lot_num,id 
+create view  lot_value(TotalValue,ticker,Price,Shares,Basis,Lot,LotOwner) as 
+     SELECT (num_shares*CurrentPrice),ticker,CurrentPrice,num_shares,(num_shares*purchase_price),lot_num,id 
      from lots NATURAL JOIN stock_prices;
 
 create view account_value(accVal,id) as
