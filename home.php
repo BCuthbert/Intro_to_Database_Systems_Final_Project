@@ -152,7 +152,7 @@ $deposit_err = "";
 
     <p><h3>Your Total Account Value: $ <?php echo $accoutValue; ?></h3></p>
 <?php
-    $query = "SELECT ticker,Price,sum(Shares) as shares,sum(TotalValue) as marketVal,sum(basis) as totalBasis FROM lot_value where LotOwner = ? GROUP BY ticker";
+    $query = "SELECT ticker,Price,avg(Previous) as avgPrev ,sum(Shares) as shares,sum(TotalValue) as marketVal,sum(basis) as totalBasis FROM lot_value where LotOwner = ? GROUP BY ticker";
     if($stmt = $mysqli->prepare($query)){
         $stmt->bind_param('i', $_SESSION["id"]);
         $stmt->execute(); 
@@ -160,11 +160,19 @@ $deposit_err = "";
             // Store result
             if ($result->num_rows > 0) {
                 // Setup the table and headers
-                echo "<Center><table><tr><th> STOCK </th><th> SHARES </th><th> PRICE </th><th> MARKET VALUE </th><th> DAY CHANGE </th><th> COST BASIS </th><th> GAIN / LOSS </th></tr>";
+                echo "<Center><table><tr><th> STOCK </th><th> SHARES </th><th> PRICE </th><th> DAY CHANGE </th><th> MARKET VALUE </th><th> COST BASIS </th><th> GAIN / LOSS </th></tr>";
                 // output data of each row into a table row
                 while($row = $result->fetch_assoc()) {
-                    echo "<tr><td>".$row["ticker"]."</td><td> ".$row["shares"]."</td><td>$".$row["Price"]."</td><td> $".$row["marketVal"]."</td>";
-                    echo "<td> ... </td><td> $".$row["totalBasis"]."</td>";
+                    echo "<tr><td>".$row["ticker"]."</td><td> ".$row["shares"]."</td><td>$".$row["Price"]."</td>";
+                    $daygain = number_format( $row["Price"] - $row["avgPrev"],2,'.','');
+                    if($daygain > 0){
+                        echo "<td style=\"color: green;\"> $".$daygain."</td>";
+                    }else if($daygain == 0){
+                        echo "<td> ".$daygain."</td>";
+                    }else{ 
+                        echo "<td style=\"color: red;\"> $".$daygain." </td>";
+                    }   
+                    echo "<td> $".$row["marketVal"]."</td><td> $".$row["totalBasis"]."</td>";
                     $gain = $row["marketVal"] - $row["totalBasis"];
                     if($gain > 0){
                         echo "<td style=\"color: green;\"> $".$gain."</td></tr>";
