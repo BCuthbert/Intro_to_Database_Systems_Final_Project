@@ -160,7 +160,7 @@ $deposit_err = "";
             // Store result
             if ($result->num_rows > 0) {
                 // Setup the table and headers
-                echo "<Center><table><tr><th> STOCK </th><th> SHARES </th><th> PRICE </th><th> DAY CHANGE </th><th> MARKET VALUE </th><th> COST BASIS </th><th> GAIN / LOSS </th></tr>";
+                echo "<Center><table><tr><th> STOCK </th><th> SHARES </th><th> PRICE </th><th> DAY CHANGE </th><th> MARKET VALUE </th><th> COST BASIS </th><th> GAIN / LOSS </th><th></th></tr>";
                 // output data of each row into a table row
                 while($row = $result->fetch_assoc()) {
                     echo "<tr><td>".$row["ticker"]."</td><td> ".$row["shares"]."</td><td>$".$row["Price"]."</td>";
@@ -175,12 +175,16 @@ $deposit_err = "";
                     echo "<td> $".$row["marketVal"]."</td><td> $".$row["totalBasis"]."</td>";
                     $gain = $row["marketVal"] - $row["totalBasis"];
                     if($gain > 0){
-                        echo "<td style=\"color: green;\"> $".$gain."</td></tr>";
+                        echo "<td style=\"color: green;\"> $".$gain."</td>";
                     }else if($gain == 0){
-                        echo "<td> ".$gain."</td></tr>";
+                        echo "<td> ".$gain."</td>";
                     }else{ 
-                        echo "<td style=\"color: red;\"> $".$gain." </td></tr>";
+                        echo "<td style=\"color: red;\"> $".$gain." </td>";
                     }   
+
+                    echo "<td><input type=\"button\" onclick=\"alert('sell!')\" value=\"Sell\" name=".$row["ticker"]."Sell> </td>";
+
+                    echo "</tr>";
                 }
                 echo "</table></center>"; // close the table
                 echo "There are ". $result->num_rows . " results.";
@@ -197,6 +201,7 @@ $deposit_err = "";
 ?>
 
 </body>
+
 
 <?php $mysqli->close(); ?>
 
