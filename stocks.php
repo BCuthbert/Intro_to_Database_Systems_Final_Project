@@ -47,6 +47,15 @@ require_once "config.php";
 $sqlstatement = $mysqli->prepare("SELECT DISTINCT ticker FROM stocks;"); //prepare the statement
 $sqlstatement->execute(); //execute the query
 $stocks = $sqlstatement->get_result(); //return the results we'll use them in the web form
+
+$sqlstatement = $mysqli->prepare("SELECT cash FROM account where id = " . $_SESSION["id"] . ";"); //prepare the statement
+$sqlstatement->execute(); //execute the query
+$sqlstatement->store_result();             
+// Bind result variables
+$sqlstatement->bind_result($money);
+$sqlstatement->fetch();
+
+
 $sqlstatement->close();
 
 
@@ -74,30 +83,53 @@ $sqlstatement->close();
 
     $stock = trim($_POST["stock"]);
     $numshares = trim($_POST["num_shares"]);
+
+    $sql = $mysqli->prepare("SELECT price from price_history where price_date = '2023-11-17' and ticker = ?;"); //prepare the statement
+    $sql->bind_param("s", $param_stock);
+    $param_stock = $stock;
+    $sql->execute(); //execute the query
+    $sql->store_result();             
+    // Bind result variables
+    $sql->bind_result($stockPrice);
+    $sql->fetch();
+
+    $cost = ($stockPrice * $numshares);
+
+
         
     // Prepare an insert statement
-    $sql = "INSERT INTO lots (id, ticker, num_shares, purchase_price, purchase_date) VALUES (?, ?, ?, 100.00, '2023-11-17');";
+    $sql = "INSERT INTO lots (id, ticker, num_shares, purchase_price, purchase_date) VALUES (?, ?, ?, ?, '2023-11-17');";
     
      
     if($stmt = $mysqli->prepare($sql)){
         // Bind variables to the prepared statement as parameters
-        $stmt->bind_param("isd", $param_id, $param_stock, $param_numshares);
+        $stmt->bind_param("isdd", $param_id, $param_stock, $param_numshares, $param_stockPrice);
             
         // Set parameters
         $param_id = $_SESSION["id"];
         $param_stock = $stock;
         $param_numshares = $numshares;
+        $param_stockPrice = $stockPrice;
+        $param_cost = $cost;
 
+        if ($cost <= $money) {
+          if($stmt->execute()){
+            $sql = "UPDATE account SET cash = cash - ? WHERE id = ?;";
+            $statement = $mysqli->prepare($sql);
+            $statement->bind_param("di", $param_cost, $param_id);
 
+            $param_id = $_SESSION["id"];
+            $param_cost = $cost;
+            $statement->execute();
+          } else{
+              echo "Oops! Something went wrong. Please try again later.";
+          }
 
-        if($stmt->execute()){
-
-        } else{
-            echo "Oops! Something went wrong. Please try again later.";
-        }
-
-        // Close statement
-        $stmt->close();
+          // Close statement
+          $stmt->close();
+      } else {
+        echo "Can't buy more than you can afford.";
+      }
     }
 }
 
