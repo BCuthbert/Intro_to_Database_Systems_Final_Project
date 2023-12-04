@@ -162,7 +162,7 @@ $deposit_err = "";
 
     <p><h3>Your Total Account Value: $ <?php echo $accoutValue; ?></h3></p>
 <?php
-    $query = "SELECT ticker,Price,avg(Previous) as avgPrev ,sum(Shares) as shares,sum(TotalValue) as marketVal,sum(basis) as totalBasis FROM lot_value where LotOwner = ? AND lotDate = ? GROUP BY ticker";
+    $query = "SELECT ticker,Price,avg(Previous) as avgPrev ,sum(Shares) as shares,sum(TotalValue) as marketVal,sum(basis) as totalBasis FROM lot_value where LotOwner = ? GROUP BY ticker";
     if($stmt = $mysqli->prepare($query)){
         $stmt->bind_param('is', $_SESSION["id"], date("Y-m-d",$_SESSION["demoDate"]));
         $stmt->execute(); 
