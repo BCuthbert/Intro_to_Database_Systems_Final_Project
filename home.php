@@ -182,7 +182,7 @@ $deposit_err = "";
                         echo "<td style=\"color: red;\"> $".$gain." </td>";
                     }   
 
-                    echo "<td><input type=\"button\" onclick=\"alert('sell!')\" value=\"Sell\" name=".$row["ticker"]."Sell> </td>";
+                    echo "<td><a href=\"home.php?form_sell=1&ticker=".$row["ticker"]."&value=".$row["marketVal"]."\">Sell</a> </td>";
 
                     echo "</tr>";
                 }
@@ -199,6 +199,43 @@ $deposit_err = "";
     }
     $result->close();
 ?>
+
+<form action="home.php" method=get>
+                <input type="hidden" name="form_sell" >
+                <input type="hidden" name="ticker" >
+                <input type="hidden" name="value"  >
+</form>
+
+
+<?php 
+if (isset($_GET["form_sell"])){
+    if (!empty($_GET["ticker"]) && !empty($_GET["value"]) && !empty($_GET["form_sell"]))
+    {
+        $sellTicker = $_GET["ticker"];
+        $sellVal = $_GET["value"];
+            //Sell the lots
+        $sellstatement = $mysqli->prepare("DELETE FROM lots where id=? and ticker=?"); 
+        $sellstatement->bind_param("is",$_SESSION["id"],$sellTicker); 
+        $sellstatement->execute(); 
+        echo $sellstatement->error; 
+        $sellstatement->close();
+
+            //update the cash
+        $cashUpdate = $mysqli->prepare("UPDATE account set cash=cash+? where id = ?");
+        $cashUpdate->bind_param("di",$sellVal,$_SESSION["id"]);
+        $cashUpdate->execute();
+        echo $cashUpdate->error;
+        $cashUpdate->close();
+
+    }
+    else {
+        echo "<b> Error: Something went wrong with the form.</b>";
+    }
+    header("Refresh:0;url=home.php"); //refresh the page to show the faculty is gone
+}
+
+?> <!-- this is the end of our php code -->
+
 
 </body>
 
