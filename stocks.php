@@ -31,8 +31,11 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
   <div class="w3-bar w3-white w3-card w3-large">
     <a href="./home.php" class="w3-bar-item w3-left-align w3-button w3-padding-large w3-hover-gray" style="font-size:23px;">Home</a>
     <a href="./stocks.php" class="w3-bar-item w3-left-align w3-button w3-hide-small w3-padding-large w3-hover-gray" style="font-size:23px;">Stocks</a>
+    <!--
     <a href="#" class="w3-bar-item w3-left-align w3-button w3-hide-small w3-padding-large w3-hover-gray" style="font-size:23px;">Buy</a>
     <a href="#" class="w3-bar-item w3-left-align w3-button w3-hide-small w3-padding-large w3-hover-gray" style="font-size:23px;">Sell</a>
+-->
+  <label class="w3-bar-item w3-left-align w3-padding-large" style="font-size:23px;">Date: <?php echo date("Y-m-d",$_SESSION["demoDate"] ); ?></label>
     <a onclick="show_hide();" class="w3-bar-item w3-right w3-button w3-hide-small w3-padding-large w3-hover-red"><i class="fa fa-user" style="font-size:32px;padding:medium;"><br><?php echo htmlspecialchars($_SESSION["username"]); ?></i></a>
   </div>
 <body>
@@ -60,7 +63,7 @@ $sqlstatement->close();
 
 
 
-   $sql = "SELECT ticker, company_name, price, price_date FROM stocks NATURAL JOIN price_history WHERE price_date = '2023-11-17'";
+   $sql = "SELECT ticker, company_name, price, price_date FROM stocks NATURAL JOIN price_history WHERE price_date = '".Date("Y-m-d",$_SESSION["demoDate"])."'";
    $result = $mysqli->query($sql);
 
    if ($result->num_rows > 0) {
@@ -84,9 +87,10 @@ $sqlstatement->close();
     $stock = trim($_POST["stock"]);
     $numshares = trim($_POST["num_shares"]);
 
-    $sql = $mysqli->prepare("SELECT price from price_history where price_date = '2023-11-17' and ticker = ?;"); //prepare the statement
-    $sql->bind_param("s", $param_stock);
+    $sql = $mysqli->prepare("SELECT price from price_history where price_date = ? and ticker = ?;"); //prepare the statement
+    $sql->bind_param("ss",$param_date, $param_stock);
     $param_stock = $stock;
+    $param_date = date("Y-m-d",$_SESSION["demoDate"]);
     $sql->execute(); //execute the query
     $sql->store_result();             
     // Bind result variables
@@ -98,12 +102,12 @@ $sqlstatement->close();
 
         
     // Prepare an insert statement
-    $sql = "INSERT INTO lots (id, ticker, num_shares, purchase_price, purchase_date) VALUES (?, ?, ?, ?, '2023-11-17');";
+    $sql = "INSERT INTO lots (id, ticker, num_shares, purchase_price, purchase_date) VALUES (?, ?, ?, ?, ?);";
     
      
     if($stmt = $mysqli->prepare($sql)){
         // Bind variables to the prepared statement as parameters
-        $stmt->bind_param("isdd", $param_id, $param_stock, $param_numshares, $param_stockPrice);
+        $stmt->bind_param("isdds", $param_id, $param_stock, $param_numshares, $param_stockPrice,$param_date);
             
         // Set parameters
         $param_id = $_SESSION["id"];
@@ -111,6 +115,7 @@ $sqlstatement->close();
         $param_numshares = $numshares;
         $param_stockPrice = $stockPrice;
         $param_cost = $cost;
+        $param_date = date("Y-m-d",$_SESSION["demoDate"]);
 
         if ($cost <= $money) {
           if($stmt->execute()){

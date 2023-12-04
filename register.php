@@ -70,15 +70,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO account (user, password, cash, creation_date) VALUES ('" . $username . "', '" . password_hash($password, PASSWORD_DEFAULT) . "', 0, CURDATE());";
+        $sql = "INSERT INTO account (user, password, cash, creation_date) VALUES ('" . $username . "', '" . password_hash($password, PASSWORD_DEFAULT) . "', 0, '".date("Y-m-d",$_SESSION["demoDate"])."');";
         
          
         if($stmt = $mysqli->prepare($sql)){
             // Bind variables to the prepared statement as parameters
-            $stmt->bind_param("ss", $param_username, $param_password);
+            $stmt->bind_param("ss", $param_username, $param_password,$param_date);
             
             // Set parameters
             $param_username = $username;
+            $param_date = date("Y-m-d",$_SESSION["demoDate"]);
             // Attempt to execute the prepared statement
             if($stmt->execute()){
                 // redirect to login page

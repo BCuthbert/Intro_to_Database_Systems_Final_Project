@@ -10,13 +10,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
 require_once "config.php";
 
-
 $deposit = "";
 $deposit_err = "";
  
 // Processing form data when form is submitted
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-
+    if($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['timeButton'])){
+        if(isset($_POST['timeButton'])){
+            $_SESSION["demoDate"] =strtotime("+1 day", $_SESSION["demoDate"]);
+        }
         // Check if deposit amount is empty
         if(empty(trim($_POST["deposit"]))){
             $deposit_err = "Please enter the amount of money to deposit.";
@@ -90,12 +91,15 @@ $deposit_err = "";
 
         $stmt->close();
     }
+    if(isset($_POST['timeButton'])){
+        $_SESSION["demoDate"] =strtotime("+1 day", $_SESSION["demoDate"]);
+    }
+
 ?>
 
 
 
 
-?>
  
 <!DOCTYPE html>
 <html lang="en">
@@ -117,8 +121,14 @@ $deposit_err = "";
   <div class="w3-bar w3-white w3-card w3-large">
     <a class="w3-bar-item w3-left-align w3-button w3-padding-large w3-hover-gray" style="font-size:23px;" onclick="window.location.reload();">Home</a>
     <a href="./stocks.php" class="w3-bar-item w3-left-align w3-button w3-hide-small w3-padding-large w3-hover-gray" style="font-size:23px;">Stocks</a>
+    <!--
     <a href="#" class="w3-bar-item w3-left-align w3-button w3-hide-small w3-padding-large w3-hover-gray" style="font-size:23px;">Buy</a>
     <a href="#" class="w3-bar-item w3-left-align w3-button w3-hide-small w3-padding-large w3-hover-gray" style="font-size:23px;">Sell</a>
+-->
+    <label class="w3-bar-item w3-left-align w3-padding-large" style="font-size:23px;">Date: <?php echo date("Y-m-d",$_SESSION["demoDate"] ); ?></label>
+    <form method="post">
+        <input type="submit" name="timeButton" value="Advance Time" class="w3-bar-item w3-left-align w3-button w3-hide-small w3-padding-large w3-hover-gray" style="font-size:23px;"/>
+    </form>
     <a onclick="show_hide();" class="w3-bar-item w3-right w3-button w3-hide-small w3-padding-large w3-hover-red"><i class="fa fa-user" style="font-size:32px;padding:medium;"><br><?php echo htmlspecialchars($_SESSION["username"]); ?></i></a>
   </div>
   
@@ -152,9 +162,9 @@ $deposit_err = "";
 
     <p><h3>Your Total Account Value: $ <?php echo $accoutValue; ?></h3></p>
 <?php
-    $query = "SELECT ticker,Price,avg(Previous) as avgPrev ,sum(Shares) as shares,sum(TotalValue) as marketVal,sum(basis) as totalBasis FROM lot_value where LotOwner = ? GROUP BY ticker";
+    $query = "SELECT ticker,Price,avg(Previous) as avgPrev ,sum(Shares) as shares,sum(TotalValue) as marketVal,sum(basis) as totalBasis FROM lot_value where LotOwner = ? AND lotDate = ? GROUP BY ticker";
     if($stmt = $mysqli->prepare($query)){
-        $stmt->bind_param('i', $_SESSION["id"]);
+        $stmt->bind_param('is', $_SESSION["id"], date("Y-m-d",$_SESSION["demoDate"]));
         $stmt->execute(); 
         if($result= $stmt->get_result()){
             // Store result

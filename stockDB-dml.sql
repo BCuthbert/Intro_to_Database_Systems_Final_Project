@@ -3,7 +3,7 @@ delete from lots;
 delete from account;
 delete from stocks;
 
-insert into account values (1,'test1','password000', '2023-11-09',100000);
+insert into account values (1,'demoAccount','password000', '2023-11-09',100000);
 
 insert into stocks values ('AAPL','Apple');
 insert into stocks values ('AMZN','Amazon');
