@@ -39,10 +39,12 @@ create view   stock_prices(ticker, CurrentPrice) as
      from price_history 
      where price_date = '2023-11-17';
 
-create view  lot_value(TotalValue,ticker,Price,Previous,Shares,Basis,Lot,LotOwner) as 
-     SELECT (num_shares*CurrentPrice),ticker,CurrentPrice,old_price,num_shares,(num_shares*purchase_price),lot_num,id 
-     from lots NATURAL JOIN stock_prices NATURAL JOIN (SELECT ticker, price as old_price from price_history where price_date = '2023-11-16') as old_stocks;
-
+create view  lot_value(TotalValue,ticker,Price,Previous,Shares,Basis,Lot,LotOwner,l_date) as 
+     SELECT (num_shares*currentPrice),ticker,CurrentPrice,Yesterday,num_shares,(num_shares*purchase_price),lot_num,id,price_date
+     from lots NATURAL JOIN (select p.ticker, p.price as currentPrice, p.price_date, o.price as Yesterday 
+          from price_history as p join price_history as o 
+          on p.price_date = DATE_SUB(o.price_date,INTERVAL 1 DAY) AND p.ticker = o.ticker) as stockStats;
+     
 create view account_value(accVal,id) as
      SELECT IF(TotalValue IS NOT NULL,sum(TotalValue)+cash,cash), id 
      from lot_value right outer join account on lot_value.LotOwner=account.id
@@ -56,3 +58,7 @@ create view historic_account_value(date,accVal,id) as
      SELECT date, IF(TotalValue IS NOT NULL,sum(TotalValue)+cash,cash), id
      from historic_lot_value right outer join account on historic_lot_value.LotOwner=account.id
      GROUP BY date;
+
+
+
+
