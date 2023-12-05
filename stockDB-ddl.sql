@@ -42,8 +42,8 @@ create view   stock_prices(ticker, CurrentPrice) as
 create view  lot_value(TotalValue,ticker,Price,Previous,Shares,Basis,Lot,LotOwner,l_date) as 
      SELECT (num_shares*currentPrice),ticker,CurrentPrice,Yesterday,num_shares,(num_shares*purchase_price),lot_num,id,price_date
      from lots NATURAL JOIN (select p.ticker, p.price as currentPrice, p.price_date, o.price as Yesterday 
-          from price_history as p join price_history as o 
-          on p.price_date = DATE_SUB(o.price_date,INTERVAL 1 DAY) AND p.ticker = o.ticker) as stockStats;
+          from price_history as p left outer join price_history as o 
+          on o.price_date = DATE_SUB(p.price_date,INTERVAL 1 DAY) AND p.ticker = o.ticker) as stockStats;
      
 create view account_value(accVal,id) as
      SELECT IF(TotalValue IS NOT NULL,sum(TotalValue)+cash,cash), id 
