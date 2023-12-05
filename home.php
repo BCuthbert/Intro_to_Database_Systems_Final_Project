@@ -162,9 +162,10 @@ $deposit_err = "";
 
     <p><h3>Your Total Account Value: $ <?php echo $accoutValue; ?></h3></p>
 <?php
-    $query = "SELECT ticker,Price,avg(Previous) as avgPrev ,sum(Shares) as shares,sum(TotalValue) as marketVal,sum(basis) as totalBasis FROM lot_value where LotOwner = ? GROUP BY ticker";
+    $query = "SELECT ticker,Price,Previous,sum(Shares) as shares,sum(TotalValue) as marketVal,sum(Basis) as totalBasis FROM lot_value where LotOwner = ? AND l_date = ? GROUP BY ticker";
     if($stmt = $mysqli->prepare($query)){
-        $stmt->bind_param('is', $_SESSION["id"], date("Y-m-d",$_SESSION["demoDate"]));
+        $stmt->bind_param('is', $_SESSION["id"],$param_date);
+        $param_date = date("Y-m-d",$_SESSION["demoDate"]);
         $stmt->execute(); 
         if($result= $stmt->get_result()){
             // Store result
@@ -174,7 +175,7 @@ $deposit_err = "";
                 // output data of each row into a table row
                 while($row = $result->fetch_assoc()) {
                     echo "<tr><td>".$row["ticker"]."</td><td> ".$row["shares"]."</td><td>$".$row["Price"]."</td>";
-                    $daygain = number_format( $row["Price"] - $row["avgPrev"],2,'.','');
+                    $daygain = number_format( $row["Price"] - $row["Previous"],2,'.','');
                     if($daygain > 0){
                         echo "<td style=\"color: green;\"> $".$daygain."</td>";
                     }else if($daygain == 0){
