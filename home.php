@@ -184,7 +184,7 @@ $deposit_err = "";
                         echo "<td style=\"color: red;\"> $".$daygain." </td>";
                     }   
                     echo "<td> $".$row["marketVal"]."</td><td> $".$row["totalBasis"]."</td>";
-                    $gain = $row["marketVal"] - $row["totalBasis"];
+                    $gain = number_format( $row["marketVal"] - $row["totalBasis"],2,'.','');
                     if($gain > 0){
                         echo "<td style=\"color: green;\"> $".$gain."</td>";
                     }else if($gain == 0){
