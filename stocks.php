@@ -36,8 +36,17 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <a href="#" class="w3-bar-item w3-left-align w3-button w3-hide-small w3-padding-large w3-hover-gray" style="font-size:23px;">Sell</a>
 -->
   <label class="w3-bar-item w3-left-align w3-padding-large" style="font-size:23px;">Date: <?php echo date("Y-m-d",$_SESSION["demoDate"] ); ?></label>
+  <div>
+
+  </div>
     <a onclick="show_hide();" class="w3-bar-item w3-right w3-button w3-hide-small w3-padding-large w3-hover-red"><i class="fa fa-user" style="font-size:32px;padding:medium;"><br><?php echo htmlspecialchars($_SESSION["username"]); ?></i></a>
   </div>
+  <div id="dropdown" style="display:none;">
+    <div id="myDropdown" class="dropdown-content">
+        <button onclick="window.location.href='logout.php'" class="w3-hover-gray" style="border:2px solid black;position:absolute;right:40px;background-color:white;">Log out</button>
+    </div>
+</div>
+
 <body>
 
 <p><h2>List of Stocks:</h2></p>
@@ -165,11 +174,20 @@ $sqlstatement->close();
 </form>
 
 
-<?php 
-
-
-?>
-
-
 </body>
+
+<script>
+    var flag = false;
+    const show_hide = () => {
+        if (flag){
+            document.getElementById("dropdown").setAttribute("style", "display:none");
+            flag = false;
+        }else {
+            document.getElementById("dropdown").setAttribute("style", "display:visible");
+            flag = true;
+        }
+    }
+</script>
+
+
 </html>
