@@ -175,7 +175,10 @@ $deposit_err = "";
                 // output data of each row into a table row
                 while($row = $result->fetch_assoc()) {
                     echo "<tr><td>".$row["ticker"]."</td><td> ".$row["shares"]."</td><td>$".$row["Price"]."</td>";
-                    $daygain = number_format( $row["Price"] - $row["Previous"],2,'.','');
+                    if($row["Previous"])
+                        $daygain = number_format( $row["Price"] - $row["Previous"],2,'.','');
+                    else 
+                        $daygain = 0;
                     if($daygain > 0){
                         echo "<td style=\"color: green;\"> $".$daygain."</td>";
                     }else if($daygain == 0){
