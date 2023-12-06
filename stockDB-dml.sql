@@ -1,14 +1,14 @@
 delete from price_history;
 delete from lots;
-delete from account;
-delete from stocks;
+--delete from account;
+--delete from stocks;
 
-insert into account values (1,'demoAccount','password000', '2023-11-09',100000);
+--insert into account values (1,'demoAccount','password000', '2023-11-09',100000);
 
-insert into stocks values ('AAPL','Apple');
-insert into stocks values ('AMZN','Amazon');
-insert into stocks values ('NVDA','Nvidia');
-insert into stocks values ('AMD','Advanced Micro Devices');
+--insert into stocks values ('AAPL','Apple');
+--insert into stocks values ('AMZN','Amazon');
+--insert into stocks values ('NVDA','Nvidia');
+--insert into stocks values ('AMD','Advanced Micro Devices');
 
 insert into price_history values ('2023-11-10','AAPL', 186.70);
 insert into price_history values ('2023-11-11','AAPL', 182.10);
