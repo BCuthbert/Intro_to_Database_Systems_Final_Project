@@ -51,9 +51,9 @@ insert into price_history values ('2023-11-16','AMD', 119.83);
 insert into price_history values ('2023-11-17','AMD', 120.62);
 
 
-insert into lots values (NULL,1,'AAPL',100,186.70,'2023-11-10');
-insert into lots values (NULL,1,'AAPL',100,182.10,'2023-11-11');
-insert into lots values (NULL,1,'AMZN',100,143.35,'2023-11-12');
-insert into lots values (NULL,1,'NVDA',100,486.20,'2023-11-13');
+insert into lots values (NULL,1,'AAPL',10,186.70,'2023-11-10');
+insert into lots values (NULL,1,'AAPL',10,182.10,'2023-11-11');
+insert into lots values (NULL,1,'AMZN',10,143.35,'2023-11-12');
+insert into lots values (NULL,1,'NVDA',10,486.20,'2023-11-13');
 
 
