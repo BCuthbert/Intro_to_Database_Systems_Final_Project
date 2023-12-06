@@ -135,8 +135,7 @@ $deposit_err = "";
 <body>
 <div id="dropdown" style="display:none;">
     <div id="myDropdown" class="dropdown-content">
-        <button class="w3-hover-gray" style="border:2px solid black;position:absolute;right:40px;background-color:white;">Change Password</button>
-        <button onclick="window.location.href='logout.php'" class="w3-hover-gray" style="border:2px solid black;position:absolute;right:40px;margin-top:21px;background-color:white;">Log out</button>
+        <button onclick="window.location.href='logout.php'" class="w3-hover-gray" style="border:2px solid black;position:absolute;right:40px;background-color:white;">Log out</button>
     </div>
 </div>
 </nav>
