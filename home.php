@@ -114,7 +114,8 @@ $deposit_err = "";
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body{ font: 14px sans-serif; text-align: center; }
-        table, th, td { border: 1px solid black; padding: 15px }
+        table, th, td { border: 1px solid black; }
+        th, td { padding: 4px; font-size: 1.5em; }
     </style>
 </head>
 <div class="w3-top">
