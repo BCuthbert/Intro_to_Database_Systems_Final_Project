@@ -45,10 +45,10 @@ create view  lot_value(TotalValue,ticker,Price,Previous,Shares,Basis,Lot,LotOwne
           from price_history as p left outer join price_history as o 
           on o.price_date = DATE_SUB(p.price_date,INTERVAL 1 DAY) AND p.ticker = o.ticker) as stockStats;
      
-create view account_value(accVal,id) as
-     SELECT IF(TotalValue IS NOT NULL,sum(TotalValue)+cash,cash), id 
+create view account_value(accVal,id,aDate) as
+     SELECT IF(TotalValue IS NOT NULL,sum(TotalValue)+cash,cash), id, l_date 
      from lot_value right outer join account on lot_value.LotOwner=account.id
-     GROUP BY id;
+     GROUP BY l_date;
 
 create view price_movement(ticker,price, pDate, one_day, three_day) as 
      select day_history.Ticker, day_history.today,day_history.pDate,day_history.yesterday, t.price as three_day from 
@@ -59,7 +59,7 @@ create view price_movement(ticker,price, pDate, one_day, three_day) as
 
 
 
-
+/*
 create view  historic_lot_value(date,TotalValue,ticker,Price,Shares,Lot,LotOwner) as 
      SELECT price_date,(num_shares*price),ticker,price,num_shares,lot_num,id 
      from lots NATURAL JOIN price_history;
@@ -68,7 +68,7 @@ create view historic_account_value(date,accVal,id) as
      SELECT date, IF(TotalValue IS NOT NULL,sum(TotalValue)+cash,cash), id
      from historic_lot_value right outer join account on historic_lot_value.LotOwner=account.id
      GROUP BY date;
-
+*/
 
 
 

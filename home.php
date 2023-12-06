@@ -71,11 +71,11 @@ $deposit_err = "";
         $stmt->close();
     }
 
-    $sql = "SELECT accVal FROM account_value WHERE id = (?);";
+    $sql = "SELECT accVal FROM account_value WHERE id = (?) and aDate = ?;";
 
     if($stmt = $mysqli->prepare($sql)){
-        $stmt->bind_param('i', $_SESSION["id"]);
-
+        $stmt->bind_param('is', $_SESSION["id"],$param_date);
+        $param_date = date("Y-m-d",$_SESSION["demoDate"]);
         if($stmt->execute()){
             // Store result
 
