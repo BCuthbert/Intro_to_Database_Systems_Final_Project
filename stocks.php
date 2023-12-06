@@ -73,6 +73,9 @@ $sqlstatement->close();
 
 
    $sql = "SELECT ticker, company_name, price, price_date FROM stocks NATURAL JOIN price_history WHERE price_date = '".Date("Y-m-d",$_SESSION["demoDate"])."'";
+   //swap out price_history for price_movment
+   //add one_day and three_day to select clause 
+   //change price_date to pDate in where 
    $result = $mysqli->query($sql);
 
    if ($result->num_rows > 0) {
@@ -81,6 +84,7 @@ $sqlstatement->close();
 	// output data of each row into a table row
 	 while($row = $result->fetch_assoc()) {
 		 echo "<tr><td>".$row["ticker"]."</td><td>".$row["company_name"]."</td><td>".$row["price"]."</td><td>".$row["price_date"]."</td></tr>";
+     //add one_day and three_date to table, maybe do some coloring or something like on home page to show if it is up or down 
 	 }
 
 	echo "</table></center>"; // close the table
