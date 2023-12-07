@@ -64,23 +64,44 @@ $sqlstatement->close();
 
 
 
-   $sql = "SELECT ticker, company_name, price, price_date FROM stocks NATURAL JOIN price_history WHERE price_date = '".Date("Y-m-d",$_SESSION["demoDate"])."'";
-   $result = $mysqli->query($sql);
+$sql = "SELECT ticker, company_name, price, pDate, one_day, three_day FROM stocks NATURAL JOIN price_movement WHERE pDate = '".Date("Y-m-d",$_SESSION["demoDate"])."'";
+//swap out price_history for price_movment
+//add one_day and three_day to select clause 
+//change price_date to pDate in where 
+$result = $mysqli->query($sql);
 
-   if ($result->num_rows > 0) {
-     	// Setup the table and headers
-	echo "<Center><table><tr><th>Ticker</th><th>Company Name</th><th>Price</th><th>Date</th></tr>";
-	// output data of each row into a table row
-	 while($row = $result->fetch_assoc()) {
-		 echo "<tr><td>".$row["ticker"]."</td><td>".$row["company_name"]."</td><td>".$row["price"]."</td><td>".$row["price_date"]."</td></tr>";
-	 }
+if ($result->num_rows > 0) {
+    // Setup the table and headers
+echo "<Center><table><tr><th>Ticker</th><th>Company Name</th><th>Price</th><th>Date</th><th>-1 Day</th><th>-3 Day</th></tr>";
+// output data of each row into a table row
+while($row = $result->fetch_assoc()) {
+  echo "<tr><td>".$row["ticker"]."</td><td>".$row["company_name"]."</td><td>".$row["price"]."</td><td>".$row["pDate"]."</td>";
+  $one_day_change = number_format($row["price"] - $row["one_day"],2,'.','');
+ if($one_day_change > 0){
+   echo "<td style=\"color: green;\"> $".$one_day_change."</td>";
+ }else if($one_day_change == 0){
+   echo "<td> ".$one_day_change."</td>";
+ }else{ 
+   echo "<td style=\"color: red;\"> $".$one_day_change." </td>";
+ }
+   $three_day_change = number_format($row["price"] - $row["three_day"],2,'.','');
+ if($three_day_change > 0){
+   echo "<td style=\"color: green;\"> $".$three_day_change."</td>";
+ }else if($three_day_change == 0){
+   echo "<td> ".$three_day_change."</td>";
+ }else{ 
+   echo "<td style=\"color: red;\"> $".$three_day_change." </td>";
+ }
 
-	echo "</table></center>"; // close the table
-	echo "There are ". $result->num_rows . " results.";
-	// Don't render the table if no results found
-   	} else {
-        echo "0 results";
-    }
+  //add one_day and three_date to table, maybe do some coloring or something like on home page to show if it is up or down 
+}
+
+echo "</table></center>"; // close the table
+echo "There are ". $result->num_rows . " results.";
+// Don't render the table if no results found
+  } else {
+     echo "0 results";
+ }
 
 
   if($_SERVER["REQUEST_METHOD"] == "POST") {
