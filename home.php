@@ -143,6 +143,9 @@ $deposit_err = "";
 </body>
 
 <body>
+<?php 
+$image_url='ApeMoney.jpg';
+?>
     <div style="text-align:center;width:300px;margin-left:38%;margin-top:40px;">
         <h1 class="w3-margin-top">Cash: $<?php echo $cash; ?></h1>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
