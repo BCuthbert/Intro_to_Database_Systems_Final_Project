@@ -145,7 +145,7 @@ $deposit_err = "";
 
 <body>
 
-    <h2>TestTitle</h2>
+    <h1>Ape Brother's Investing</h1>
 
     <center>
     <div style="text-align:center;width:300px;margin-top:40px;">
@@ -245,12 +245,12 @@ if (isset($_GET["form_sell"])){
         $cashUpdate->execute();
         echo $cashUpdate->error;
         $cashUpdate->close();
-
+        header("refresh:0;url=home.php"); 
     }
     else {
         echo "<b> Error: Something went wrong with the form.</b>";
     }
-    header("Refresh:0;url=home.php"); //refresh the page to show the faculty is gone
+    header("refresh:0;url=home.php"); 
 }
 
 ?> <!-- this is the end of our php code -->
