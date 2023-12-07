@@ -105,11 +105,16 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <title>Sign Up</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+h1 {
+  text-align: center;
+	margin-right: 135px;
+}
         body{ font: 14px sans-serif; }
         .wrapper{ width: 360px; padding: 20px; }
     </style>
 </head>
-<body>
+<h1>Ape Brothers Investing</h1>
+    <img src="ApeMoney.jpg" width="400" height="400" style="margin-left:35%"/> 
     <div class="w3-center w3-container" style="text-align:center;width:300px;margin-left:38%;margin-top:40px;">
         <h2 >Sign Up</h2>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">

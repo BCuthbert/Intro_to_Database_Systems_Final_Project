@@ -36,17 +36,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <a href="#" class="w3-bar-item w3-left-align w3-button w3-hide-small w3-padding-large w3-hover-gray" style="font-size:23px;">Sell</a>
 -->
   <label class="w3-bar-item w3-left-align w3-padding-large" style="font-size:23px;">Date: <?php echo date("Y-m-d",$_SESSION["demoDate"] ); ?></label>
-  <div>
-
-  </div>
     <a onclick="show_hide();" class="w3-bar-item w3-right w3-button w3-hide-small w3-padding-large w3-hover-red"><i class="fa fa-user" style="font-size:32px;padding:medium;"><br><?php echo htmlspecialchars($_SESSION["username"]); ?></i></a>
-  </div>
-  <div id="dropdown" style="display:none;">
-    <div id="myDropdown" class="dropdown-content">
-        <button onclick="window.location.href='logout.php'" class="w3-hover-gray" style="border:2px solid black;position:absolute;right:40px;background-color:white;">Log out</button>
-    </div>
-</div>
-
+	<img src="ApeMoney.jpg" width="100" height="100" style="margin-left: 11.4%"/>  
+	</div>
 <body>
 
 <p><h2>List of Stocks:</h2></p>
@@ -72,36 +64,15 @@ $sqlstatement->close();
 
 
 
-   $sql = "SELECT ticker, company_name, price, pDate, one_day, three_day FROM stocks NATURAL JOIN price_movement WHERE pDate = '".Date("Y-m-d",$_SESSION["demoDate"])."'";
-   //swap out price_history for price_movment
-   //add one_day and three_day to select clause 
-   //change price_date to pDate in where 
+   $sql = "SELECT ticker, company_name, price, price_date FROM stocks NATURAL JOIN price_history WHERE price_date = '".Date("Y-m-d",$_SESSION["demoDate"])."'";
    $result = $mysqli->query($sql);
 
    if ($result->num_rows > 0) {
      	// Setup the table and headers
-	echo "<Center><table><tr><th>Ticker</th><th>Company Name</th><th>Price</th><th>Date</th><th>-1 Day</th><th>-3 Day</th></tr>";
+	echo "<Center><table><tr><th>Ticker</th><th>Company Name</th><th>Price</th><th>Date</th></tr>";
 	// output data of each row into a table row
 	 while($row = $result->fetch_assoc()) {
-		 echo "<tr><td>".$row["ticker"]."</td><td>".$row["company_name"]."</td><td>".$row["price"]."</td><td>".$row["pDate"]."</td>";
-     $one_day_change = number_format($row["price"] - $row["one_day"],2,'.','');
-    if($one_day_change > 0){
-      echo "<td style=\"color: green;\"> $".$one_day_change."</td>";
-    }else if($one_day_change == 0){
-      echo "<td> ".$one_day_change."</td>";
-    }else{ 
-      echo "<td style=\"color: red;\"> $".$one_day_change." </td>";
-    }
-      $three_day_change = number_format($row["price"] - $row["three_day"],2,'.','');
-    if($three_day_change > 0){
-      echo "<td style=\"color: green;\"> $".$three_day_change."</td>";
-    }else if($three_day_change == 0){
-      echo "<td> ".$three_day_change."</td>";
-    }else{ 
-      echo "<td style=\"color: red;\"> $".$three_day_change." </td>";
-    }
-
-     //add one_day and three_date to table, maybe do some coloring or something like on home page to show if it is up or down 
+		 echo "<tr><td>".$row["ticker"]."</td><td>".$row["company_name"]."</td><td>".$row["price"]."</td><td>".$row["price_date"]."</td></tr>";
 	 }
 
 	echo "</table></center>"; // close the table
@@ -192,23 +163,16 @@ $sqlstatement->close();
 
 	<p>Enter Amount Of Stocks: <input type=text size=10 name="num_shares">
 	<p> <input type=submit value="submit">
+
+  
 </form>
 
 
+<?php 
+
+
+?>
+
+
 </body>
-
-<script>
-    var flag = false;
-    const show_hide = () => {
-        if (flag){
-            document.getElementById("dropdown").setAttribute("style", "display:none");
-            flag = false;
-        }else {
-            document.getElementById("dropdown").setAttribute("style", "display:visible");
-            flag = true;
-        }
-    }
-</script>
-
-
 </html>
