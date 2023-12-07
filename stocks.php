@@ -37,7 +37,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 -->
   <label class="w3-bar-item w3-left-align w3-padding-large" style="font-size:23px;">Date: <?php echo date("Y-m-d",$_SESSION["demoDate"] ); ?></label>
     <a onclick="show_hide();" class="w3-bar-item w3-right w3-button w3-hide-small w3-padding-large w3-hover-red"><i class="fa fa-user" style="font-size:32px;padding:medium;"><br><?php echo htmlspecialchars($_SESSION["username"]); ?></i></a>
-	<img src="ApeMoney.jpg" width="100" height="100" style="margin-left: 11.4%"/>  
+	<img src="ApeMoney.jpg" width="100" height="100" style="margin-left: 10.7%"/>  
 	</div>
 <body>
 
@@ -164,7 +164,7 @@ $sqlstatement->close();
 	<p>Enter Amount Of Stocks: <input type=text size=10 name="num_shares">
 	<p> <input type=submit value="submit">
 
-  
+
 </form>
 
 
