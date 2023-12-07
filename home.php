@@ -130,6 +130,7 @@ $deposit_err = "";
     <form method="post">
         <input type="submit" name="timeButton" value="Advance Time" class="w3-bar-item w3-left-align w3-button w3-hide-small w3-padding-large w3-hover-gray" style="font-size:23px;"/>
     </form>
+    <img src="ApeMoney.jpg" width="100" height="100"/>
     <a onclick="show_hide();" class="w3-bar-item w3-right w3-button w3-hide-small w3-padding-large w3-hover-red"><i class="fa fa-user" style="font-size:32px;padding:medium;"><br><?php echo htmlspecialchars($_SESSION["username"]); ?></i></a>
   </div>
   
@@ -143,9 +144,10 @@ $deposit_err = "";
 </body>
 
 <body>
-<?php 
-$image_url='ApeMoney.jpg';
-?>
+
+    <h2>TestTitle</h2>
+
+    
     <div style="text-align:center;width:300px;margin-left:38%;margin-top:40px;">
         <h1 class="w3-margin-top">Cash: $<?php echo $cash; ?></h1>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">

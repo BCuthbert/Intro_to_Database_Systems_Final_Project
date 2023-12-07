@@ -100,6 +100,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </head>
 <body>
     <div class="w3-center w3-container" style="text-align:center;width:300px;margin-left:38%;margin-top:40px;">
+    <h1>Ape Brothers Investing</h1>
+    <img src="ApeMoney.jpg" width="400" height="400" style="margin-left:-16%"/>    
+    
         <h2>Login</h2>
         <br><br>
         <?php 
