@@ -147,8 +147,8 @@ $deposit_err = "";
 
     <h2>TestTitle</h2>
 
-    
-    <div style="text-align:center;width:300px;margin-left:38%;margin-top:40px;">
+    <center>
+    <div style="text-align:center;width:300px;margin-top:40px;">
         <h1 class="w3-margin-top">Cash: $<?php echo $cash; ?></h1>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
@@ -164,7 +164,7 @@ $deposit_err = "";
         </form>
         
     </div>
-
+    </center>
     <p><h3>Your Total Account Value: $ <?php echo $accoutValue; ?></h3></p>
 <?php
     $query = "SELECT ticker,Price,Previous,sum(Shares) as shares,sum(TotalValue) as marketVal,sum(Basis) as totalBasis FROM lot_value where LotOwner = ? AND l_date = ? GROUP BY ticker";
