@@ -119,7 +119,7 @@ $deposit_err = "";
     </style>
 </head>
 <div class="w3-top">
-  <div class="w3-bar w3-white w3-card w3-large">
+  <div class="w3-bar w3-card w3-large" style="background-color:#bdfa7b;">
     <a class="w3-bar-item w3-left-align w3-button w3-padding-large w3-hover-gray" style="font-size:23px;" onclick="window.location.reload();">Home</a>
     <a href="./stocks.php" class="w3-bar-item w3-left-align w3-button w3-hide-small w3-padding-large w3-hover-gray" style="font-size:23px;">Stocks</a>
     <!--
